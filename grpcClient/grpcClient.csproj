@@ -9,6 +9,7 @@
 
 	<ItemGroup>
 		<Protobuf Include="greet.proto" GrpcServices="Client" />
+    <Protobuf Include="unary.proto" GrpcServices="Client" />
 	</ItemGroup>
 
 	<ItemGroup>
