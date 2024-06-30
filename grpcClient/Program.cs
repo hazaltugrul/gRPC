@@ -1,23 +1,41 @@
 ﻿using Grpc.Net.Client;
 using grpcServer;
 //using grpcUnaryClient;
-using grpcServerStreamingClient;
+//using grpcServerStreamingClient;
+using grpcClientStreamingClient;
 
 var channel = GrpcChannel.ForAddress("http://localhost:5119");
 
-#region ServerStreaming
-    var serverStreamingClient = new ServerStreaming.ServerStreamingClient(channel);
-    var response = serverStreamingClient.SendMessage(new MessageRequest{
-        Name ="Hazal",
-        Message = "Hello from client"
+#region ClientStreaming
+var clientStreamingClient = new ClientStreaming.ClientStreamingClient(channel);
+var request = clientStreamingClient.SendMessage();
+for (int i = 0; i < 10; i++)
+{
+    await Task.Delay(1000);
+    await request.RequestStream.WriteAsync(new MessageRequest{
+      Name = "Hazal",
+      Message ="Hello from client"
     });
+}
 
-    CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+request.RequestStream.CompleteAsync();
+System.Console.WriteLine((await request.ResponseAsync).Message);
+
+#endregion
+
+
+#region ServerStreaming
+//     var serverStreamingClient = new ServerStreaming.ServerStreamingClient(channel);
+//     var response = serverStreamingClient.SendMessage(new MessageRequest{
+//         Name ="Hazal",
+//         Message = "Hello from client"
+//     });
+
+//     CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
     
-   while(await response.ResponseStream.MoveNext(cancellationTokenSource.Token)){
-        System.Console.WriteLine(response.ResponseStream.Current.Message);
-    }
-    
+//    while(await response.ResponseStream.MoveNext(cancellationTokenSource.Token)){
+//         System.Console.WriteLine(response.ResponseStream.Current.Message);
+//     }
 #endregion
 
 #region Unary
