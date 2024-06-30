@@ -12,6 +12,7 @@
     <Protobuf Include="unary.proto" GrpcServices="Client" />
     <Protobuf Include="serverStreaming.proto" GrpcServices="Client" />
     <Protobuf Include="clientStreaming.proto" GrpcServices="Client" />
+    <Protobuf Include="biDirectionalStreaming.proto" GrpcServices="Client" />
 	</ItemGroup>
 
 	<ItemGroup>

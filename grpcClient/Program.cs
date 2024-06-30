@@ -1,28 +1,54 @@
-﻿using Grpc.Net.Client;
+﻿using System.Net.Cache;
+using Grpc.Net.Client;
+using grpcBiDirectionalStreamingClient;
 using grpcServer;
-//using grpcUnaryClient;
-//using grpcServerStreamingClient;
+using grpcUnaryClient;
+using grpcServerStreamingClient;
 using grpcClientStreamingClient;
 
 var channel = GrpcChannel.ForAddress("http://localhost:5119");
 
-#region ClientStreaming
-var clientStreamingClient = new ClientStreaming.ClientStreamingClient(channel);
-var request = clientStreamingClient.SendMessage();
-for (int i = 0; i < 10; i++)
-{
-    await Task.Delay(1000);
-    await request.RequestStream.WriteAsync(new MessageRequest{
-      Name = "Hazal",
-      Message ="Hello from client"
-    });
-}
+#region Bi-Directional Streaming
+//     var biDirectionalStreamingClient = new BiDirectionalStreaming.BiDirectionalStreamingClient(channel);
+//     var request = biDirectionalStreamingClient.SendMessage();
 
-request.RequestStream.CompleteAsync();
-System.Console.WriteLine((await request.ResponseAsync).Message);
+//     var taskRequest = Task.Run(async ()=> {
+//         for (int i = 0; i < 10; i++)
+//         {
+//             await Task.Delay(1000);
+//             await request.RequestStream.WriteAsync(new MessageRequest {
+//                 Name = "Hazal",
+//                 Message = "Hello from client"
+//             });
+//         }
+//     });
 
+// CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+    
+//     while(await request.ResponseStream.MoveNext(cancellationTokenSource.Token)){
+//          System.Console.WriteLine(request.ResponseStream.Current.Message);
+//     }
+
+//     await taskRequest;
+//     await request.RequestStream.CompleteAsync();
 #endregion
 
+#region ClientStreaming
+// var clientStreamingClient = new ClientStreaming.ClientStreamingClient(channel);
+// var request = clientStreamingClient.SendMessage();
+// for (int i = 0; i < 10; i++)
+// {
+//     await Task.Delay(1000);
+//     await request.RequestStream.WriteAsync(new MessageRequest{
+//       Name = "Hazal",
+//       Message ="Hello from client"
+//     });
+// }
+
+// request.RequestStream.CompleteAsync();
+// System.Console.WriteLine((await request.ResponseAsync).Message);
+
+#endregion
 
 #region ServerStreaming
 //     var serverStreamingClient = new ServerStreaming.ServerStreamingClient(channel);

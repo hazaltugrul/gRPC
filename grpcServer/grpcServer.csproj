@@ -10,6 +10,7 @@
 		<Protobuf Include="Protos\unary.proto" GrpcServices="Server" />
 		<Protobuf Include="Protos\serverStreaming.proto" GrpcServices="Server" />
 		<Protobuf Include="Protos\clientStreaming.proto" GrpcServices="Server" />
+		<Protobuf Include="Protos\biDirectionalStreaming.proto" GrpcServices="Server" />
 	</ItemGroup>
 
 	<ItemGroup>
